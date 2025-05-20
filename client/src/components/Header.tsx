@@ -34,9 +34,11 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <a href="#about" className="text-foreground hover:text-accent transition-colors">
-                About
-              </a>
+              <Link href="/about">
+                <a className={`text-foreground hover:text-accent transition-colors ${location === "/about" ? "text-accent" : ""}`}>
+                  About
+                </a>
+              </Link>
             </li>
             <li>
               <a href="#features" className="text-foreground hover:text-accent transition-colors">
@@ -74,13 +76,11 @@ export default function Header() {
                     Home
                   </a>
                 </Link>
-                <a 
-                  href="#about" 
-                  className="block text-lg font-medium text-foreground hover:text-accent transition-colors"
-                  onClick={closeMenu}
-                >
-                  About
-                </a>
+                <Link href="/about" onClick={closeMenu}>
+                  <a className={`block text-lg font-medium text-foreground hover:text-accent transition-colors ${location === "/about" ? "text-accent" : ""}`}>
+                    About
+                  </a>
+                </Link>
                 <a 
                   href="#features" 
                   className="block text-lg font-medium text-foreground hover:text-accent transition-colors"

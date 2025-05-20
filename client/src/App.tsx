@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Experience from "@/pages/experience";
+import About from "@/pages/about";
 import { useEffect } from "react";
 import { useUserContext } from "./context/UserContext";
 
@@ -28,6 +29,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/experience/:mood" component={Experience} />
+      <Route path="/about" component={About} />
       <Route component={NotFound} />
     </Switch>
   );
