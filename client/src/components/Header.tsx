@@ -28,16 +28,16 @@ export default function Header() {
           <ul className="flex space-x-8">
             <li>
               <Link href="/">
-                <a className={`text-foreground hover:text-accent transition-colors ${location === "/" ? "text-accent" : ""}`}>
+                <span className={`text-foreground hover:text-accent transition-colors ${location === "/" ? "text-accent" : ""} cursor-pointer`}>
                   Home
-                </a>
+                </span>
               </Link>
             </li>
             <li>
               <Link href="/about">
-                <a className={`text-foreground hover:text-accent transition-colors ${location === "/about" ? "text-accent" : ""}`}>
+                <span className={`text-foreground hover:text-accent transition-colors ${location === "/about" ? "text-accent" : ""} cursor-pointer`}>
                   About
-                </a>
+                </span>
               </Link>
             </li>
             <li>
@@ -72,14 +72,14 @@ export default function Header() {
               
               <nav className="space-y-6">
                 <Link href="/" onClick={closeMenu}>
-                  <a className={`block text-lg font-medium text-foreground hover:text-accent transition-colors ${location === "/" ? "text-accent" : ""}`}>
+                  <span className={`block text-lg font-medium text-foreground hover:text-accent transition-colors ${location === "/" ? "text-accent" : ""} cursor-pointer`}>
                     Home
-                  </a>
+                  </span>
                 </Link>
                 <Link href="/about" onClick={closeMenu}>
-                  <a className={`block text-lg font-medium text-foreground hover:text-accent transition-colors ${location === "/about" ? "text-accent" : ""}`}>
+                  <span className={`block text-lg font-medium text-foreground hover:text-accent transition-colors ${location === "/about" ? "text-accent" : ""} cursor-pointer`}>
                     About
-                  </a>
+                  </span>
                 </Link>
                 <a 
                   href="#features" 

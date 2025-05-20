@@ -148,7 +148,7 @@ function BackgroundElements() {
       })}
       
       {/* Add some animation keyframes */}
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{__html: `
         @keyframes float-0 {
           0% { transform: translateY(0) rotate(0); }
           100% { transform: translateY(-50px) rotate(5deg); }
@@ -161,7 +161,7 @@ function BackgroundElements() {
           0% { transform: translateY(0) rotate(0); }
           100% { transform: translateY(-70px) rotate(10deg); }
         }
-      `}</style>
+      `}} />
     </div>
   );
 }
@@ -193,7 +193,8 @@ export default function Home() {
           });
           
           // Set the mood and navigate to the experience
-          setSelectedMood(suggestedMoodName);
+          // Cast to MoodName type since we know suggestMood returns a valid mood name
+          setSelectedMood(suggestedMoodName as "Tired" | "Chill" | "Happy" | "Anxious" | "Focused" | "Stressed" | "Playful" | "Calm");
           setLocation(`/experience/${suggestedMoodName.toLowerCase()}`);
         }
       }, 4 * 60 * 1000); // 4 minutes

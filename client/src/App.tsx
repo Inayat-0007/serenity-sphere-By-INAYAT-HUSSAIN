@@ -9,6 +9,7 @@ import Experience from "@/pages/experience";
 import About from "@/pages/about";
 import { useEffect } from "react";
 import { useUserContext } from "./context/UserContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 function Router() {
   const { setSessionId } = useUserContext();
@@ -40,7 +41,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <ErrorBoundary>
+          <Router />
+        </ErrorBoundary>
       </TooltipProvider>
     </QueryClientProvider>
   );
