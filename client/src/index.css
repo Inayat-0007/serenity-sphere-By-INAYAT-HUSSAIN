@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 40 33% 98%;
+  --foreground: 34 14% 32%;
+  
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 34 5.3% 44.7%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 34 14.3% 32.1%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 34 14.3% 32.1%;
+  
+  --border: 34 5.9% 90%;
+  --input: 34 5.9% 90%;
+  
+  --primary: 34 31% 75%;
+  --primary-foreground: 34 40% 22%;
+  
+  --secondary: 40 38% 87%;
+  --secondary-foreground: 34 9.8% 32%;
+  
+  --accent: 34 25% 60%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  
+  --ring: 34 14.3% 60.1%;
+  
+  --radius: 0.5rem;
+  
+  /* Chart colors */
+  --chart-1: 34 31% 75%;
+  --chart-2: 34 25% 60%;
+  --chart-3: 34 15% 45%;
+  --chart-4: 40 38% 87%;
+  --chart-5: 40 15% 80%;
+  
+  /* Success, error, warning colors */
+  --success: 151 40% 54%;
+  --error: 12 76% 61%;
+  --warning: 38 92% 62%;
+}
+
+.dark {
+  --background: 34 25% 10%;
+  --foreground: 34 10% 90%;
+  
+  --muted: 34 15% 20%;
+  --muted-foreground: 34 5% 70%;
+  
+  --popover: 34 25% 12%;
+  --popover-foreground: 34 10% 90%;
+  
+  --card: 34 25% 12%;
+  --card-foreground: 34 10% 90%;
+  
+  --border: 34 15% 25%;
+  --input: 34 15% 25%;
+  
+  --primary: 34 25% 60%;
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 34 15% 30%;
+  --secondary-foreground: 0 0% 98%;
+  
+  --accent: 34 25% 50%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  
+  --ring: 34 15% 50%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    @apply antialiased bg-background text-foreground;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .container {
+    @apply max-w-screen-xl mx-auto;
+  }
+}
+
+/* Custom styles for components */
+.mood-card {
+  transition: all 0.3s ease;
+}
+
+.mood-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.age-option:hover {
+  @apply bg-secondary/50;
+}
+
+.smooth-transition {
+  transition: all 0.3s ease;
+}
