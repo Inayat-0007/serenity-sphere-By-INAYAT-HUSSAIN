@@ -2,7 +2,7 @@ import { TESTIMONIALS } from "@/lib/constants";
 
 export default function Testimonials() {
   return (
-    <section className="py-16 px-6 md:px-12 bg-secondary/30">
+    <section id="testimonials" className="py-16 pb-24 px-6 md:px-12 bg-secondary/30 mb-12">
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-heading font-medium text-foreground mb-4">Discover Your Mindful Retreat</h2>
