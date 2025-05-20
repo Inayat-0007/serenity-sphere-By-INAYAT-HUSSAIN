@@ -23,9 +23,7 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
   const [brightness, setBrightness] = useState(60);
   const { toast } = useToast();
   
-  const audioRef = useRef<HTMLAudioElement>(null);
   const visualRef = useRef<HTMLVideoElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
   
   const moodData = MOODS[mood];
   
@@ -33,62 +31,75 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
   useEffect(() => {
     if (!moodData) return;
     
-    // Load audio
-    if (audioRef.current) {
-      audioRef.current.src = moodData.audioUrl;
-      audioRef.current.volume = volume / 100;
-      audioRef.current.load();
-    }
+    // Load background audio using Howler
+    audioController.loadBackgroundSound(moodData.audioUrl);
+    
+    // Set initial volume
+    audioController.setVolume(volume / 100);
     
     // Load voice prompt using the audio controller
     audioController.loadVoicePrompt(moodData.voicePrompt);
     
     // Cleanup on unmount
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
       audioController.cleanup();
     };
-  }, [moodData, volume]);
+  }, [moodData]);
+  
+  // Update volume when slider changes
+  useEffect(() => {
+    audioController.setVolume(volume / 100);
+  }, [volume]);
   
   // Handle play/pause
   const togglePlay = () => {
-    if (!audioRef.current) return;
-    
     if (isPlaying) {
-      audioRef.current.pause();
+      audioController.pauseBackgroundSound();
     } else {
-      audioRef.current.play();
+      audioController.playBackgroundSound();
     }
     
     setIsPlaying(!isPlaying);
   };
   
-  // Update time display
-  const updateTime = () => {
-    if (!audioRef.current) return;
-    
-    setCurrentTime(audioRef.current.currentTime);
-    setDuration(audioRef.current.duration || 0);
-    
-    animationFrameRef.current = requestAnimationFrame(updateTime);
-  };
-  
-  // Start updating time when playing
+  // Set up a timer to track playback position
   useEffect(() => {
+    let timer: number;
+    
     if (isPlaying) {
-      animationFrameRef.current = requestAnimationFrame(updateTime);
-    } else if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
+      // Update every 250ms
+      timer = window.setInterval(() => {
+        // Since Howler doesn't provide a way to get exact position,
+        // we'll simulate it with our own timer (simplified)
+        if (audioController.getBackgroundPlayingState()) {
+          setCurrentTime(prev => {
+            // Increment time
+            const newTime = prev + 0.25;
+            
+            // Loop back if we reach duration
+            if (newTime >= duration && duration > 0) {
+              return 0;
+            }
+            
+            return newTime;
+          });
+        }
+      }, 250);
     }
     
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (timer) {
+        clearInterval(timer);
       }
     };
-  }, [isPlaying]);
+  }, [isPlaying, duration]);
+  
+  // Set a default duration for background sounds (typically looping ambience)
+  useEffect(() => {
+    // Set a default duration based on the mood (most ambient sounds are 2-5 minutes)
+    const defaultDuration = 180; // 3 minutes as default
+    setDuration(defaultDuration);
+  }, [mood]);
   
   // Format time display
   const formatTime = (time: number) => {
@@ -100,9 +111,7 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
   // Handle volume change
   const handleVolumeChange = (newVolume: number[]) => {
     setVolume(newVolume[0]);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume[0] / 100;
-    }
+    audioController.setVolume(newVolume[0] / 100);
   };
   
   // Play voice prompt
@@ -237,8 +246,7 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
                     </div>
                   </div>
                   
-                  {/* Hidden audio element */}
-                  <audio ref={audioRef} preload="auto" loop />
+                  {/* Audio is handled by Howler.js */}
                 </div>
                 
                 <div className="voice-prompt p-4 bg-primary/10 rounded-lg border border-primary/30">
