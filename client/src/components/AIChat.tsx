@@ -62,7 +62,7 @@ export default function AIChat() {
   
   // When suggested moods are updated, add them to the chat
   useEffect(() => {
-    if (suggestedMoods.aiResponse && !isLoading) {
+    if (suggestedMoods.aiResponse && !isLoading && suggestedMoods.moods.length > 0) {
       const moodOptions = (
         <div className="mt-4 space-y-4">
           {suggestedMoods.moods.map((mood) => (
@@ -73,7 +73,7 @@ export default function AIChat() {
             >
               <div className="flex items-center mb-2">
                 <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center mr-3">
-                  <i className={`fas fa-${mood.icon} text-primary`}></i>
+                  <i className={`fas fa-${mood.icon || 'circle'} text-primary`}></i>
                 </div>
                 <h3 className="text-lg font-heading font-medium text-foreground">{mood.name}</h3>
               </div>
@@ -92,6 +92,20 @@ export default function AIChat() {
               <p className="text-foreground">{suggestedMoods.aiResponse}</p>
               {moodOptions}
               <p className="mt-4 text-foreground">Which one resonates with you more?</p>
+            </>
+          )
+        }
+      ]);
+    } else if (suggestedMoods.aiResponse && !isLoading) {
+      // Handle case when there are no mood suggestions
+      setMessages(prev => [
+        ...prev,
+        {
+          sender: 'ai',
+          content: (
+            <>
+              <p className="text-foreground">{suggestedMoods.aiResponse}</p>
+              <p className="mt-4 text-foreground">Feel free to tell me more about how you're feeling.</p>
             </>
           )
         }
