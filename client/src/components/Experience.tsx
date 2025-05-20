@@ -116,8 +116,12 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
   
   // Play voice prompt
   const playVoicePrompt = () => {
-    if (speechController.isSupported()) {
-      speechController.speak(moodData.voicePrompt, 0.9, 1);
+    // Try to use the audio controller first (Howler.js)
+    if (moodData.voicePrompt) {
+      audioController.playVoicePrompt();
+    } else if (speechController.isSupported()) {
+      // Fall back to speech synthesis if no voice prompt is available
+      speechController.speak(moodData.voicePrompt || "Breathe deeply and relax.", 0.9, 1);
     } else {
       toast({
         title: "Voice not supported",
@@ -231,13 +235,13 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
                           variant="ghost"
                           className="text-foreground/70 hover:text-accent transition-colors p-2 h-auto"
                           onClick={() => {
-                            if (audioRef.current) {
-                              audioRef.current.currentTime = 0;
-                              if (!isPlaying) {
-                                audioRef.current.play();
-                                setIsPlaying(true);
-                              }
-                            }
+                            // Reset playback
+                            audioController.stopBackgroundSound();
+                            setTimeout(() => {
+                              audioController.playBackgroundSound();
+                              setIsPlaying(true);
+                              setCurrentTime(0);
+                            }, 100);
                           }}
                         >
                           <i className="fas fa-redo"></i>
