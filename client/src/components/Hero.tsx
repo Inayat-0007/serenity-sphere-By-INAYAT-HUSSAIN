@@ -56,9 +56,9 @@ export default function Hero() {
           </div>
           <div className="md:w-1/2 relative">
             <img 
-              src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-              alt="Serene 3D visualization representing digital mindfulness" 
-              className="rounded-2xl shadow-lg w-full h-auto"
+              src="https://images.unsplash.com/photo-1470115636492-6d2b56f9146d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" 
+              alt="Person meditating peacefully in natural setting" 
+              className="rounded-2xl shadow-lg w-full h-auto object-cover"
             />
             <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-lg p-4 max-w-xs hidden md:block">
               <div className="flex items-center mb-2">
