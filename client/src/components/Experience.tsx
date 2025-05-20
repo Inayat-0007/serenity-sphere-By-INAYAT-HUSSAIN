@@ -7,6 +7,7 @@ import audioController, { speechController } from "@/lib/audioController";
 import { ThreeDScene } from "./ThreeDScene";
 import { useToast } from "@/hooks/use-toast";
 import { MoodName } from "@shared/schema";
+import { getAudioForMood } from "@/lib/soundData";
 
 interface ExperienceProps {
   mood: MoodName;
@@ -31,20 +32,46 @@ export default function Experience({ mood, onBack }: ExperienceProps) {
   useEffect(() => {
     if (!moodData) return;
     
-    // Load background audio using Howler
-    audioController.loadBackgroundSound(moodData.audioUrl);
-    
-    // Set initial volume
-    audioController.setVolume(volume / 100);
-    
-    // Load voice prompt using the audio controller
-    audioController.loadVoicePrompt(moodData.voicePrompt);
+    try {
+      // Use embedded audio data for reliable playback
+      const audioData = getAudioForMood(mood);
+      
+      // Load background audio using Howler
+      audioController.loadBackgroundSound(audioData);
+      
+      // Start playing automatically
+      audioController.playBackgroundSound();
+      setIsPlaying(true);
+      
+      // Set initial volume
+      audioController.setVolume(volume / 100);
+      
+      // Use speech synthesis for voice prompts if available
+      setTimeout(() => {
+        if (window.speechSynthesis) {
+          const welcomeMessage = moodData.voicePrompt || `Welcome to your ${moodData.title} experience. Take a deep breath and relax.`;
+          const utterance = new SpeechSynthesisUtterance(welcomeMessage);
+          utterance.rate = 0.9;
+          utterance.pitch = 1.1;
+          window.speechSynthesis.speak(utterance);
+        }
+      }, 1500);
+    } catch (error) {
+      console.error("Failed to initialize audio:", error);
+    }
     
     // Cleanup on unmount
     return () => {
-      audioController.cleanup();
+      try {
+        audioController.cleanup();
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      } catch (error) {
+        console.error("Audio cleanup error:", error);
+      }
     };
-  }, [moodData]);
+  }, [moodData, mood, volume]);
   
   // Update volume when slider changes
   useEffect(() => {
